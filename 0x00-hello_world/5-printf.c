@@ -4,11 +4,9 @@
  * main - Entry point
  * 
  * Return: Always 0 (Success)
- *     */
+ */
 int main(void)
 {
-	char test_str[] "\"with proper grammar, but the outcome is a piece of art,\n";
-
-	printf(test_str);
+	printf("with proper grammar, but the outcome is a piece of art,\n");
 	return (0);
 }
