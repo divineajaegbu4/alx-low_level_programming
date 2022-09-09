@@ -7,6 +7,8 @@
  */
 int main(void)
 {
-	char printf("with proper grammar, but the outcome is a piece of art,\n");
+	char test_str[] ="with proper grammar, but the outcome is a piece of art,\n";
+
+	printf(test_str)
 	return (0);
 }
