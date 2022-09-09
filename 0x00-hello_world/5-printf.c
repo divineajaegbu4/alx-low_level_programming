@@ -9,6 +9,6 @@ int main(void)
 {
 	char test_str[] "\"with proper grammar, but the outcome is a piece of art,\n";
 
-	puts(test_str);
+	printf(test_str);
 	return (0);
 }
