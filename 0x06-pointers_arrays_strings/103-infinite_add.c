@@ -1,3 +1,8 @@
+/*
+ * File: 102-infinite_add.c
+ * Auth: Brennan D Baraban
+ */
+
 #include "main.h"
 
 char *add_strings(char *n1, char *n2, char *r, int r_index);
@@ -13,7 +18,6 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r);
  * Return: If r can store the sum - a pointer to the result.
  *         If r cannot store the sum - 0.
  */
-
 char *add_strings(char *n1, char *n2, char *r, int r_index)
 {
 	int num, tens = 0;
@@ -61,7 +65,6 @@ char *add_strings(char *n1, char *n2, char *r, int r_index)
  * Return: If r can store the sum - a pointer to the result.
  *         If r cannot store the sum - 0.
  */
-
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
 	int index, n1_len = 0, n2_len = 0;
@@ -81,5 +84,3 @@ char *infinite_add(char *n1, char *n2, char *r, int size_r)
 
 	return (add_strings(n1, n2, r, --size_r));
 }
-Footer
-©
