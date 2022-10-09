@@ -1,137 +1,165 @@
 #include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 /**
-  * int_calloc - special calloc but 4 int arrays
-  * @nmemb: n memb
-  * @size: size of array
-  * Return: int *
-  */
-int *int_calloc(int nmemb, unsigned int size)
+ * _strlen - returns the length of a string
+ * @s: string s
+ * Return: length of string
+ */
+int _strlen(char *s)
 {
-	/* declarations */
-	int *p, n;
-	/* checking inputs */
-	if (nmemb == 0 || size == 0)
-		return (NULL);
-	/* malloc the space & check for fail */
-	p = malloc(nmemb * size);
-	if (p == NULL)
-		return (NULL);
-	/* calloc */
-	for (n = 0; n < nmemb; n++)
-		p[n] = 0;
-	return (p);
+	char *p = s;
+
+	while (*s)
+		s++;
+	return (s - p);
 }
 
 /**
-  * mult - multiplication
-  * @product: int * 4 answer
-  * @n1: string num1
-  * @n2: string num2
-  * @len1: len num1
-  * @len2: len num2
-  * Return: void
-  */
-void mult(int *product, char *n1, char *n2, int len1, int len2)
+ * _memset - fills memory with a constant byte.
+ * @s: the memory area to be filled
+ * @b: the constant byte
+ * @n: number of bytes to fill with char b
+ * Return: a pointer to the memory area s.
+ */
+
+char *_memset(char *s, char b, unsigned int n)
 {
-	/* declarations */
-	int i;
-	int j;
-	int f1, f2;
-	int sum;
-	/* the long math */
-	for (i = len1 - 1; i >= 0; i--)
+	char *p = s;
+
+	for (; n; n--)
+		*p++ = b;
+
+	return (s);
+}
+
+/**
+ * _calloc - allocates memory for an array
+ * @nmemb: number of elements
+ * @size: of each element
+ * Return: void *
+ */
+void *_calloc(unsigned int nmemb, unsigned int size)
+{
+	void *ptr;
+
+	if (size == 0 || nmemb == 0)
+		return (NULL);
+
+	ptr = malloc(nmemb * size);
+	if (ptr == NULL)
+		return (NULL);
+
+	_memset(ptr, 0, size * nmemb);
+
+	return (ptr);
+}
+
+/**
+ *_puts - prints a string, followed by a new line, to stdout.
+ * @str: the input string
+ * Return: nothing to return.
+ */
+void _puts(char *str)
+{
+	while (*str != 0)
 	{
-		sum = 0;
-		f1 = n1[i] - '0';
-		for (j = len2 - 1; j >= 0; j--)
-		{
-			f2 = n2[j] - '0';
-			sum += product[i + j + 1] + (f1 * f2);
-			product[i + j + 1] = sum % 10;
-			sum /= 10;
-		}
-		if (sum > 0)
-			product[i + j + 1] += sum;
+		_putchar(*str);
+		str++;
 	}
-	for (i = 0; product[i] == 0 && i < len1 + len2; i++)
-	{}
-	if (i == len1 + len2)
-		_putchar('0');
-	for (; i < len1 + len2; i++)
-		_putchar(product[i] + '0');
 	_putchar('\n');
 }
 
 /**
-  * is_valid - is the number a valid one
-  * @num : char string num
-  * Return: int, 1 if true 0 if false
-  */
-int is_valid(char *num)
+ * strNumbers - determines if string has only numbers
+ * @str: input string
+ * Return: 0 if false, 1 if true
+ */
+int strNumbers(char *str)
 {
-	/* declarations */
-	int i;
-	/* checking for ints */
-	for (i = 0; num[i]; i++)
+	while (*str)
 	{
-		if (num[i] < '0' || num[i] > '9')
+		if (*str < '0' || *str > '9')
 			return (0);
+		str++;
 	}
 	return (1);
 }
+
 /**
-  * err - errors r us
-  * @status: error code 4 exit
-  * Return: void
-  */
-void err(int status)
+ * multiply - multiplies two numbers (in string), and prints the result.
+ * @n1: first number
+ * @n2: second number
+ * Return: void
+ */
+
+void multiply(char *n1, char *n2)
 {
-	_putchar('E');
-	_putchar('r');
-	_putchar('r');
-	_putchar('o');
-	_putchar('r');
+	int idx, n1n, n2n, res, tmp, total;
+	int n1l = _strlen(n1);
+	int n2l = _strlen(n2);
+
+	int *ptr;
+
+	tmp = n2l;
+	total = n1l + n2l;
+	ptr = _calloc(total, sizeof(int));
+	for (n1l--; n1l >= 0; n1l--)
+	{
+		n1n = n1[n1l] - '0';
+		res = 0;
+		n2l = tmp;
+		for (n2l--; n2l >= 0; n2l--)
+		{
+			n2n = n2[n2l] - '0';
+			res += ptr[n1l + n2l + 1] + (n1n * n2n);
+			ptr[n1l + n2l + 1] = res % 10;
+			res /= 10;
+		}
+		if (res)
+		{
+			ptr[n1l + n2l + 1] = res % 10;
+		}
+	}
+	res = 0;
+	for (idx = 0; idx < total; idx++)
+	{
+		if (ptr[idx] == 0 && res == 1)
+			_putchar(ptr[idx] + '0');
+		else if (ptr[idx] > 0)
+		{
+			_putchar(ptr[idx] + '0');
+			res = 1;
+		}
+	}
 	_putchar('\n');
-	exit(status);
+	free(ptr);
 }
+
 /**
-  * main - getting the args
-  * @argc: args #
-  * @argv: arg array
-  * Return: 0
-  */
+ * main - adds positive numbers.
+ * @argc: the number of arguments
+ * @argv: the arguments
+ *
+ * Return: 0
+ */
+
 int main(int argc, char **argv)
 {
-	/* declarations */
-	int i, j, len1 = 0, len2 = 0;
-	int *res;
-	/* too many args? too few? */
-	if (argc != 3)
+	char *nb1 = argv[1];
+	char *nb2 = argv[2];
+
+	if (argc != 3 || !strNumbers(nb1) || !strNumbers(nb2))
 	{
-		err(98);
+		_puts("Error");
+		exit(98);
 	}
-	/* using isvalid */
-	for (i = 1; i < argc; i++)
+	if (*nb1 == '0' || *nb2 == '0')
+		_puts("0");
+	else
 	{
-		if (!(is_valid(argv[i])))
-			err(98);
-		if (i == 1)
-		{
-			for (j = 0; argv[i][j]; j++)
-				len1++;
-		}
-		if (i == 2)
-		{
-			for (j = 0; argv[i][j]; j++)
-				len2++;
-		}
+		multiply(nb1, nb2);
 	}
-	res = int_calloc(len1 + len2, sizeof(int));
-	if (res == NULL)
-		err(98);
-	mult(res, argv[1], argv[2], len1, len2);
-	free(res);
 	return (0);
 }
